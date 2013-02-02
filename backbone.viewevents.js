@@ -14,12 +14,32 @@ var __slice = [].slice,
     return root.Backbone.ViewEvents = factory(root.Backbone, root._);
   }
 })(this, function(Backbone, _arg) {
-  var View, ViewEvents, extend;
+  var View, ViewEvents, eventSplitter, extend, mangleEventName;
   extend = _arg.extend;
+  eventSplitter = /\s+/;
+  mangleEventName = function(name) {
+    var names;
+    name = name.trim();
+    if (eventSplitter.test(name)) {
+      name.split(eventSplitter);
+      names = (function() {
+        var _i, _len, _results;
+        _results = [];
+        for (_i = 0, _len = names.length; _i < _len; _i++) {
+          name = names[_i];
+          _results.push("viewevent:" + name);
+        }
+        return _results;
+      })();
+      return names.join(" ");
+    } else {
+      return "viewevent:" + name;
+    }
+  };
   ViewEvents = {
     on: function(name, callback, context) {
       var _this = this;
-      this.$el.on(name, function() {
+      this.$el.on(mangleEventName(name), function() {
         var args, e;
         e = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
         return callback.apply(context, args);
@@ -28,7 +48,7 @@ var __slice = [].slice,
     },
     once: function(name, callback, context) {
       var _this = this;
-      this.$el.one(name, function() {
+      this.$el.one(mangleEventName(name), function() {
         var args, e;
         e = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
         return callback.apply(context, args);
@@ -36,7 +56,7 @@ var __slice = [].slice,
       return this;
     },
     off: function(name, callback, context) {
-      this.$el.off(name, callback);
+      this.$el.off(mangleEventName(name), callback);
       return this;
     },
     trigger: function() {
@@ -46,7 +66,7 @@ var __slice = [].slice,
         view: this,
         type: name
       });
-      (_ref = this.$el).trigger.apply(_ref, [name].concat(__slice.call(args)));
+      (_ref = this.$el).trigger.apply(_ref, [mangleEventName(name)].concat(__slice.call(args)));
       return this;
     }
   };

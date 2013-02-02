@@ -8,25 +8,37 @@
     root.Backbone.ViewEvents = factory(root.Backbone, root._)
 ) this, (Backbone, {extend}) ->
 
+  eventSplitter = /\s+/
+
+  mangleEventName = (name) ->
+    name = name.trim()
+    if eventSplitter.test name
+      name.split(eventSplitter)
+      names = for name in names
+        "viewevent:#{name}"
+      names.join(" ")
+    else
+      "viewevent:#{name}"
+
   ViewEvents =
 
     on: (name, callback, context) ->
-      this.$el.on name, (e, args...) =>
+      this.$el.on mangleEventName(name), (e, args...) =>
         callback.apply(context, args)
       this
 
     once: (name, callback, context) ->
-      this.$el.one name, (e, args...) =>
+      this.$el.one mangleEventName(name), (e, args...) =>
         callback.apply(context, args)
       this
 
     off: (name, callback, context) ->
-      this.$el.off(name, callback)
+      this.$el.off(mangleEventName(name), callback)
       this
 
     trigger: (name, args...) ->
       args.push({view: this, type: name})
-      this.$el.trigger(name, args...)
+      this.$el.trigger(mangleEventName(name), args...)
       this
 
   class View extends Backbone.View
