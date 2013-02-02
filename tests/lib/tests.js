@@ -50,7 +50,7 @@ define(function(require) {
       child.trigger('trick');
       return expect(parentNotified).to.be.equal(1);
     });
-    return it('should allow to use off', function() {
+    it('should allow to use off', function() {
       var child, parent, parentNotified;
       parent = new ParentView().render();
       child = new View().render();
@@ -63,6 +63,18 @@ define(function(require) {
       parent.off('trick');
       child.trigger('trick');
       return expect(parentNotified).to.be.equal(1);
+    });
+    return it('should not interfere with DOM events', function() {
+      var child, parent, parentNotified;
+      parent = new ParentView().render();
+      child = new View().render();
+      parent.$a.append(child.$el);
+      parentNotified = 0;
+      parent.on('click', function(e) {
+        return parentNotified += 1;
+      });
+      child.$el.click();
+      return expect(parentNotified).to.be.equal(0);
     });
   });
 });

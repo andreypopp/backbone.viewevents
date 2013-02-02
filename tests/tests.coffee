@@ -59,3 +59,17 @@ define (require) ->
       child.trigger 'trick'
 
       expect(parentNotified).to.be.equal 1
+
+    it 'should not interfere with DOM events', ->
+      parent = new ParentView().render()
+      child = new View().render()
+      parent.$a.append(child.$el)
+
+      parentNotified = 0
+
+      parent.on 'click', (e) ->
+        parentNotified += 1
+
+      child.$el.click()
+
+      expect(parentNotified).to.be.equal 0
