@@ -1,0 +1,2 @@
+Backbone.ViewEvents -- a module for backbone which provides events for view
+which bubbles up to the hierarchy.
