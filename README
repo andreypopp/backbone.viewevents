@@ -1,2 +1,3 @@
-Backbone.ViewEvents -- a module for backbone which provides events for view
-which bubbles up to the hierarchy.
+Backbone.ViewEvents — alternative Events implementation for Backbone.View which
+provides events which bubble up through view hierarchy while the latter is
+inferred from DOM and the views' position in it.
