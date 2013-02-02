@@ -11,5 +11,8 @@ watch:
 clean:
 	rm -f *.js
 
+test:
+	$(MAKE) -Ctests
+
 %.js: %.coffee
 	coffee -bcp $< > $@

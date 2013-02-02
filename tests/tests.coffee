@@ -43,3 +43,19 @@ define (require) ->
       child.trigger 'trick'
 
       expect(parentNotified).to.be.equal 1
+
+    it 'should allow to use off', ->
+      parent = new ParentView().render()
+      child = new View().render()
+      parent.$a.append(child.$el)
+
+      parentNotified = 0
+
+      parent.on 'trick', (e) ->
+        parentNotified += 1
+
+      child.trigger 'trick'
+      parent.off 'trick'
+      child.trigger 'trick'
+
+      expect(parentNotified).to.be.equal 1

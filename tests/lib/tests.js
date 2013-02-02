@@ -37,7 +37,7 @@ define(function(require) {
       expect(parentNotified.type).to.be.equal('trick');
       return expect(parentNotified.view.cid).to.be.equal(child.cid);
     });
-    return it('should allow to use once', function() {
+    it('should allow to use once', function() {
       var child, parent, parentNotified;
       parent = new ParentView().render();
       child = new View().render();
@@ -47,6 +47,20 @@ define(function(require) {
         return parentNotified += 1;
       });
       child.trigger('trick');
+      child.trigger('trick');
+      return expect(parentNotified).to.be.equal(1);
+    });
+    return it('should allow to use off', function() {
+      var child, parent, parentNotified;
+      parent = new ParentView().render();
+      child = new View().render();
+      parent.$a.append(child.$el);
+      parentNotified = 0;
+      parent.on('trick', function(e) {
+        return parentNotified += 1;
+      });
+      child.trigger('trick');
+      parent.off('trick');
       child.trigger('trick');
       return expect(parentNotified).to.be.equal(1);
     });
