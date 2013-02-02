@@ -1,3 +1,17 @@
 Backbone.ViewEvents — alternative Events implementation for Backbone.View which
 provides events which bubble up through view hierarchy while the latter is
 inferred from DOM and the views' position in it.
+
+Example:
+
+  {View} = require 'backbone.viewevents'
+
+  parent = new View().render()
+  child = new View().render()
+
+  parent.$el.append(child.$el)
+
+  parent.on 'someevent', (msg) ->
+    console.log('caught!', msg)
+
+  child.trigger('someevent', 'hello')
