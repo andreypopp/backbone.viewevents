@@ -1,6 +1,6 @@
-Backbone.ViewEvents — alternative Events implementation for Backbone.View which
-provides events which bubble up through view hierarchy while the latter is
-inferred from DOM and the views' position in it.
+Backbone.ViewEvents — an alternative Events implementation for the Backbone.View
+which provides events which bubble up through a view hierarchy while the latter
+is inferred from DOM and the views' position in it.
 
 Example:
 
