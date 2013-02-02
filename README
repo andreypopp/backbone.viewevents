@@ -11,7 +11,9 @@ Example:
 
   parent.$el.append(child.$el)
 
+  # register listener on parent
   parent.on 'someevent', (msg) ->
     console.log('caught!', msg)
 
+  # trigger event on child
   child.trigger('someevent', 'hello')
