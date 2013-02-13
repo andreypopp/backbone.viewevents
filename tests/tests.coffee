@@ -152,3 +152,68 @@ define (require) ->
       view.trigger 'trick'
 
       expect(tricked).to.be.equal 1
+
+    it 'should allow to use .listenTo()', ->
+      listener = new ParentView().render()
+      view = new View().render()
+      listener.$a.append(view.$el)
+
+      tricked = false
+
+      listener.listenTo view, 'trick', (e) ->
+        tricked = e
+
+      view.trigger 'trick'
+
+      expect(tricked).to.be.ok
+      expect(tricked.type).to.be.equal 'trick'
+      expect(tricked.view.cid).to.be.equal view.cid
+
+    it 'should allow to use .stopListening()', ->
+      listener0 = extend {}, Backbone.Events
+
+      listener = new ParentView().render()
+      view = new View().render()
+      listener.$a.append(view.$el)
+
+      tricked0 = 0
+      tricked = 0
+
+      listener0.listenTo view, 'trick', (e) ->
+        tricked0 += 1
+
+      listener.listenTo view, 'trick', (e) ->
+        tricked += 1
+
+      view.trigger 'trick'
+
+      listener.stopListening()
+
+      view.trigger 'trick'
+
+      expect(tricked0).to.be.equal 2
+      expect(tricked).to.be.equal 1
+
+    it 'should allow to use .stopListening(obj)', ->
+      listener0 = extend {}, Backbone.Events
+      listener = new ParentView().render()
+      view = new View().render()
+      listener.$a.append(view.$el)
+
+      tricked0 = 0
+      tricked = 0
+
+      listener0.listenTo view, 'trick', (e) ->
+        tricked0 += 1
+
+      listener.listenTo view, 'trick', (e) ->
+        tricked += 1
+
+      view.trigger 'trick'
+
+      listener.stopListening(view)
+
+      view.trigger 'trick'
+
+      expect(tricked0).to.be.equal 2
+      expect(tricked).to.be.equal 1

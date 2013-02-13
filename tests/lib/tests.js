@@ -104,7 +104,7 @@ define(function(require) {
       expect(parentTricked.type).to.be.equal('trick');
       return expect(parentTricked.view.cid).to.be.equal(child.cid);
     });
-    it('should allow to use .listenTo()', function() {
+    it('should allow to use .listenTo() from Backbone.Events', function() {
       var listener, tricked, view;
       listener = extend({}, Backbone.Events);
       view = new View();
@@ -117,7 +117,7 @@ define(function(require) {
       expect(tricked.type).to.be.equal('trick');
       return expect(tricked.view.cid).to.be.equal(view.cid);
     });
-    it('should allow to use .stopListening()', function() {
+    it('should allow to use .stopListening() from Backbone.Events', function() {
       var listener, tricked, view;
       listener = extend({}, Backbone.Events);
       view = new View();
@@ -130,7 +130,7 @@ define(function(require) {
       view.trigger('trick');
       return expect(tricked).to.be.equal(1);
     });
-    return it('should allow to use .stopListening(obj)', function() {
+    it('should allow to use .stopListening(obj) from Backbone.Events', function() {
       var listener, tricked, view;
       listener = extend({}, Backbone.Events);
       view = new View();
@@ -141,6 +141,60 @@ define(function(require) {
       view.trigger('trick');
       listener.stopListening(view);
       view.trigger('trick');
+      return expect(tricked).to.be.equal(1);
+    });
+    it('should allow to use .listenTo()', function() {
+      var listener, tricked, view;
+      listener = new ParentView().render();
+      view = new View().render();
+      listener.$a.append(view.$el);
+      tricked = false;
+      listener.listenTo(view, 'trick', function(e) {
+        return tricked = e;
+      });
+      view.trigger('trick');
+      expect(tricked).to.be.ok;
+      expect(tricked.type).to.be.equal('trick');
+      return expect(tricked.view.cid).to.be.equal(view.cid);
+    });
+    it('should allow to use .stopListening()', function() {
+      var listener, listener0, tricked, tricked0, view;
+      listener0 = extend({}, Backbone.Events);
+      listener = new ParentView().render();
+      view = new View().render();
+      listener.$a.append(view.$el);
+      tricked0 = 0;
+      tricked = 0;
+      listener0.listenTo(view, 'trick', function(e) {
+        return tricked0 += 1;
+      });
+      listener.listenTo(view, 'trick', function(e) {
+        return tricked += 1;
+      });
+      view.trigger('trick');
+      listener.stopListening();
+      view.trigger('trick');
+      expect(tricked0).to.be.equal(2);
+      return expect(tricked).to.be.equal(1);
+    });
+    return it('should allow to use .stopListening(obj)', function() {
+      var listener, listener0, tricked, tricked0, view;
+      listener0 = extend({}, Backbone.Events);
+      listener = new ParentView().render();
+      view = new View().render();
+      listener.$a.append(view.$el);
+      tricked0 = 0;
+      tricked = 0;
+      listener0.listenTo(view, 'trick', function(e) {
+        return tricked0 += 1;
+      });
+      listener.listenTo(view, 'trick', function(e) {
+        return tricked += 1;
+      });
+      view.trigger('trick');
+      listener.stopListening(view);
+      view.trigger('trick');
+      expect(tricked0).to.be.equal(2);
       return expect(tricked).to.be.equal(1);
     });
   });
