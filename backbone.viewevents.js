@@ -38,25 +38,49 @@ var __slice = [].slice,
   };
   ViewEvents = {
     on: function(name, callback, context) {
-      var _this = this;
-      this.$el.on(mangleEventName(name), function() {
-        var args, e;
-        e = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
-        return callback.apply(context, args);
-      });
+      var c, n,
+        _this = this;
+      if (typeof name === 'object') {
+        for (n in name) {
+          c = name[n];
+          this.on(n, c, context);
+        }
+      } else {
+        this.$el.on(mangleEventName(name), function() {
+          var args, e;
+          e = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+          return callback.apply(context, args);
+        });
+      }
       return this;
     },
     once: function(name, callback, context) {
-      var _this = this;
-      this.$el.one(mangleEventName(name), function() {
-        var args, e;
-        e = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
-        return callback.apply(context, args);
-      });
+      var c, n,
+        _this = this;
+      if (typeof name === 'object') {
+        for (n in name) {
+          c = name[n];
+          this.once(n, c, context);
+        }
+      } else {
+        this.$el.one(mangleEventName(name), function() {
+          var args, e;
+          e = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+          return callback.apply(context, args);
+        });
+      }
       return this;
     },
     off: function(name, callback, context) {
-      this.$el.off(mangleEventName(name), callback);
+      var c, n;
+      if (typeof name === 'object') {
+        for (n in name) {
+          c = name[n];
+          this.off(n, c, context);
+        }
+      } else {
+        this.$el.off(mangleEventName(name), callback);
+      }
       return this;
     },
     trigger: function() {

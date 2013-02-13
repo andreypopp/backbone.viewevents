@@ -23,17 +23,29 @@
   ViewEvents =
 
     on: (name, callback, context) ->
-      this.$el.on mangleEventName(name), (e, args...) =>
-        callback.apply(context, args)
+      if (typeof name == 'object')
+        for n, c of name
+          this.on(n, c, context)
+      else
+        this.$el.on mangleEventName(name), (e, args...) =>
+          callback.apply(context, args)
       this
 
     once: (name, callback, context) ->
-      this.$el.one mangleEventName(name), (e, args...) =>
-        callback.apply(context, args)
+      if (typeof name == 'object')
+        for n, c of name
+          this.once(n, c, context)
+      else
+        this.$el.one mangleEventName(name), (e, args...) =>
+          callback.apply(context, args)
       this
 
     off: (name, callback, context) ->
-      this.$el.off(mangleEventName(name), callback)
+      if (typeof name == 'object')
+        for n, c of name
+          this.off(n, c, context)
+      else
+        this.$el.off(mangleEventName(name), callback)
       this
 
     trigger: (name, args...) ->

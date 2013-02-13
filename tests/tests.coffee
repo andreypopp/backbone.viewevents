@@ -73,3 +73,31 @@ define (require) ->
       child.$el.click()
 
       expect(parentNotified).to.be.equal 0
+
+    it 'should allow to use on by passing an object of event, callback pairs', ->
+      parent = new ParentView().render()
+      child = new View().render()
+      parent.$a.append(child.$el)
+
+      parentTricked = false
+      parentNotified = false
+
+      parent.on
+        notify: (e) -> parentNotified = e
+        trick: (e) -> parentTricked = e
+
+      expect(parentNotified).not.to.be.ok
+
+      child.trigger 'notify'
+
+      expect(parentNotified).to.be.ok
+      expect(parentNotified.type).to.be.equal 'notify'
+      expect(parentNotified.view.cid).to.be.equal child.cid
+
+      expect(parentTricked).not.to.be.ok
+
+      child.trigger 'trick'
+
+      expect(parentTricked).to.be.ok
+      expect(parentTricked.type).to.be.equal 'trick'
+      expect(parentTricked.view.cid).to.be.equal child.cid
