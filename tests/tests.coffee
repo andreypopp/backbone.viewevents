@@ -104,7 +104,7 @@ define (require) ->
       expect(parentTricked.type).to.be.equal 'trick'
       expect(parentTricked.view.cid).to.be.equal child.cid
 
-    it 'should allow to use .listenTo()', ->
+    it 'should allow to use .listenTo() from Backbone.Events', ->
       listener = extend {}, Backbone.Events
       view = new View()
 
@@ -119,7 +119,7 @@ define (require) ->
       expect(tricked.type).to.be.equal 'trick'
       expect(tricked.view.cid).to.be.equal view.cid
 
-    it 'should allow to use .stopListening()', ->
+    it 'should allow to use .stopListening() from Backbone.Events', ->
       listener = extend {}, Backbone.Events
       view = new View()
 
@@ -136,7 +136,7 @@ define (require) ->
 
       expect(tricked).to.be.equal 1
 
-    it 'should allow to use .stopListening(obj)', ->
+    it 'should allow to use .stopListening(obj) from Backbone.Events', ->
       listener = extend {}, Backbone.Events
       view = new View()
 
