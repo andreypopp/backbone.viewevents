@@ -15,17 +15,17 @@
     if eventSplitter.test name
       name.split(eventSplitter)
       names = for name in names
-        "viewevent:#{name}"
+        "viewevent:#{name}.viewevent"
       names.join(" ")
     else
-      "viewevent:#{name}"
+      "viewevent:#{name}.viewevent"
 
   ViewEvents =
 
     on: (name, callback, context) ->
       if (typeof name == 'object')
         for n, c of name
-          this.on(n, c, context)
+          this.on(n, c, callback)
       else
         this.$el.on mangleEventName(name), (e, args...) =>
           callback.apply(context, args)
@@ -34,16 +34,18 @@
     once: (name, callback, context) ->
       if (typeof name == 'object')
         for n, c of name
-          this.once(n, c, context)
+          this.once(n, c, callback)
       else
         this.$el.one mangleEventName(name), (e, args...) =>
           callback.apply(context, args)
       this
 
     off: (name, callback, context) ->
-      if (typeof name == 'object')
+      if not name
+        this.$el.off('.viewevent')
+      else if (typeof name == 'object')
         for n, c of name
-          this.off(n, c, context)
+          this.off(n, c, callback)
       else
         this.$el.off(mangleEventName(name), callback)
       this

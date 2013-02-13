@@ -3,8 +3,10 @@ var __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 define(function(require) {
-  var ParentView, View;
+  var Backbone, ParentView, View, extend;
   View = require('backbone.viewevents').View;
+  extend = require('underscore').extend;
+  Backbone = require('backbone');
   ParentView = (function(_super) {
 
     __extends(ParentView, _super);
@@ -37,7 +39,7 @@ define(function(require) {
       expect(parentNotified.type).to.be.equal('trick');
       return expect(parentNotified.view.cid).to.be.equal(child.cid);
     });
-    it('should allow to use once', function() {
+    it('should allow to use .once()', function() {
       var child, parent, parentNotified;
       parent = new ParentView().render();
       child = new View().render();
@@ -50,7 +52,7 @@ define(function(require) {
       child.trigger('trick');
       return expect(parentNotified).to.be.equal(1);
     });
-    it('should allow to use off', function() {
+    it('should allow to use .off()', function() {
       var child, parent, parentNotified;
       parent = new ParentView().render();
       child = new View().render();
@@ -76,7 +78,7 @@ define(function(require) {
       child.$el.click();
       return expect(parentNotified).to.be.equal(0);
     });
-    return it('should allow to use on by passing an object of event, callback pairs', function() {
+    it('should allow to use .on() by passing an object of event, callback pairs', function() {
       var child, parent, parentNotified, parentTricked;
       parent = new ParentView().render();
       child = new View().render();
@@ -101,6 +103,45 @@ define(function(require) {
       expect(parentTricked).to.be.ok;
       expect(parentTricked.type).to.be.equal('trick');
       return expect(parentTricked.view.cid).to.be.equal(child.cid);
+    });
+    it('should allow to use .listenTo()', function() {
+      var listener, tricked, view;
+      listener = extend({}, Backbone.Events);
+      view = new View();
+      tricked = false;
+      listener.listenTo(view, 'trick', function(e) {
+        return tricked = e;
+      });
+      view.trigger('trick');
+      expect(tricked).to.be.ok;
+      expect(tricked.type).to.be.equal('trick');
+      return expect(tricked.view.cid).to.be.equal(view.cid);
+    });
+    it('should allow to use .stopListening()', function() {
+      var listener, tricked, view;
+      listener = extend({}, Backbone.Events);
+      view = new View();
+      tricked = 0;
+      listener.listenTo(view, 'trick', function(e) {
+        return tricked += 1;
+      });
+      view.trigger('trick');
+      listener.stopListening();
+      view.trigger('trick');
+      return expect(tricked).to.be.equal(1);
+    });
+    return it('should allow to use .stopListening(obj)', function() {
+      var listener, tricked, view;
+      listener = extend({}, Backbone.Events);
+      view = new View();
+      tricked = 0;
+      listener.listenTo(view, 'trick', function(e) {
+        return tricked += 1;
+      });
+      view.trigger('trick');
+      listener.stopListening(view);
+      view.trigger('trick');
+      return expect(tricked).to.be.equal(1);
     });
   });
 });

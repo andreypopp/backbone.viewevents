@@ -27,13 +27,13 @@ var __slice = [].slice,
         _results = [];
         for (_i = 0, _len = names.length; _i < _len; _i++) {
           name = names[_i];
-          _results.push("viewevent:" + name);
+          _results.push("viewevent:" + name + ".viewevent");
         }
         return _results;
       })();
       return names.join(" ");
     } else {
-      return "viewevent:" + name;
+      return "viewevent:" + name + ".viewevent";
     }
   };
   ViewEvents = {
@@ -43,7 +43,7 @@ var __slice = [].slice,
       if (typeof name === 'object') {
         for (n in name) {
           c = name[n];
-          this.on(n, c, context);
+          this.on(n, c, callback);
         }
       } else {
         this.$el.on(mangleEventName(name), function() {
@@ -60,7 +60,7 @@ var __slice = [].slice,
       if (typeof name === 'object') {
         for (n in name) {
           c = name[n];
-          this.once(n, c, context);
+          this.once(n, c, callback);
         }
       } else {
         this.$el.one(mangleEventName(name), function() {
@@ -73,10 +73,12 @@ var __slice = [].slice,
     },
     off: function(name, callback, context) {
       var c, n;
-      if (typeof name === 'object') {
+      if (!name) {
+        this.$el.off('.viewevent');
+      } else if (typeof name === 'object') {
         for (n in name) {
           c = name[n];
-          this.off(n, c, context);
+          this.off(n, c, callback);
         }
       } else {
         this.$el.off(mangleEventName(name), callback);
