@@ -174,6 +174,8 @@ define(function(require) {
       view.trigger('trick');
       listener.stopListening();
       view.trigger('trick');
+      listener0.stopListening();
+      view.trigger('trick');
       expect(tricked0).to.be.equal(2);
       return expect(tricked).to.be.equal(1);
     });
@@ -193,6 +195,8 @@ define(function(require) {
       });
       view.trigger('trick');
       listener.stopListening(view);
+      view.trigger('trick');
+      listener0.stopListening(view);
       view.trigger('trick');
       expect(tricked0).to.be.equal(2);
       return expect(tricked).to.be.equal(1);

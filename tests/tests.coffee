@@ -191,6 +191,10 @@ define (require) ->
 
       view.trigger 'trick'
 
+      listener0.stopListening()
+
+      view.trigger 'trick'
+
       expect(tricked0).to.be.equal 2
       expect(tricked).to.be.equal 1
 
@@ -212,6 +216,10 @@ define (require) ->
       view.trigger 'trick'
 
       listener.stopListening(view)
+
+      view.trigger 'trick'
+
+      listener0.stopListening(view)
 
       view.trigger 'trick'
 
