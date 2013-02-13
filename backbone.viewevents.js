@@ -91,13 +91,13 @@ var __slice = [].slice,
       return this;
     },
     trigger: function() {
-      var args, name, _ref;
+      var args, name;
       name = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
       args.push({
         view: this,
         type: name
       });
-      (_ref = this.$el).trigger.apply(_ref, [mangleEventName(name)].concat(__slice.call(args)));
+      this.$el.trigger(mangleEventName(name), args);
       return this;
     }
   };

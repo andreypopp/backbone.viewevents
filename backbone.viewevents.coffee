@@ -60,7 +60,7 @@
 
     trigger: (name, args...) ->
       args.push({view: this, type: name})
-      this.$el.trigger(mangleEventName(name), args...)
+      this.$el.trigger(mangleEventName(name), args)
       this
 
   class View extends Backbone.View
