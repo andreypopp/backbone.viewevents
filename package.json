@@ -1,6 +1,6 @@
 {
   "name": "backbone.viewevents",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Backbone.View events which bubble",
   "main": "backbone.viewevents.js",
   "dependencies": {
