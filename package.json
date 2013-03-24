@@ -1,10 +1,9 @@
 {
   "name": "backbone.viewevents",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Backbone.View events which bubble",
   "main": "backbone.viewevents.js",
   "dependencies": {
-    "jquery-browserify": "~1.8.1",
     "backbone": "~1.0.0",
     "underscore": "~1.4.4"
   },
