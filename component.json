@@ -1,9 +1,0 @@
-{
-  "name": "backbone.viewevents",
-  "version": "0.3.4",
-  "main": ["./backbone.viewevents.js"],
-  "dependencies": {
-    "backbone": "~1.0.0",
-    "underscore": "~1.4.3"
-  }
-}
