@@ -1,0 +1,86 @@
+<!doctype html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf8" />
+<title>backbone.viewevents</title>
+<link rel="stylesheet" href="_static/default.css" type="text/css" />
+<script src="_static/jquery.js"></script>
+<script src="_static/jquery.lettering.js"></script>
+<script>
+  $(function() {
+    var $headers = $('h1');
+    $headers.lettering('words').children('span').lettering();
+    $headers.children('span').children('span:contains("¶")').remove();
+  });
+</script>
+<div class="main">
+  
+  <div class="section" id="backbone-viewevents">
+<h1>Backbone.ViewEvents<a class="headerlink" href="#backbone-viewevents" title="Permalink to this headline">¶</a></h1>
+<p>DOM events for Backbone.Views</p>
+<p>This plugin provides an alternative <tt class="docutils literal"><span class="pre">Backbone.Events</span></tt> implementation
+specifically for <tt class="docutils literal"><span class="pre">Backbone.View</span></tt> which uses underlying DOM element to trigger
+and listen to events.</p>
+<p>The way it works events from a view can bubble up through a DOM hierarchy and
+reach parent views&#8217; DOM elements and so those views themselves.</p>
+<div class="section" id="rationale">
+<h2>Rationale<a class="headerlink" href="#rationale" title="Permalink to this headline">¶</a></h2>
+<p>Sometimes it is required to listen to events from a lot of child views. This can
+be done by looping over all child views and calling <tt class="docutils literal"><span class="pre">.listenTo()</span></tt> method but
+it <cite>(a)</cite> requires you to have references to all those child view and <cite>(b)</cite> isn&#8217;t
+that performant especially if you have a lot of views to listen to.</p>
+<p>By triggering and listening to events on DOM element instead of using
+<tt class="docutils literal"><span class="pre">Backbone.Events</span></tt> we can get events bubble up through the DOM hierarchy and so
+reach the parent view. Also reusing DOM events is more performant than mimicing
+them via synthetical implementation.</p>
+</div>
+<div class="section" id="getting-started">
+<h2>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
+<p>The library can be installed over <tt class="docutils literal"><span class="pre">npm</span></tt> or <tt class="docutils literal"><span class="pre">bower</span></tt> package managers:</p>
+<div class="highlight-python"><pre>% npm install backbone.viewevents</pre>
+</div>
+<p>and exposes itself as CommonJS and AMD module in addition to exporting a
+<tt class="docutils literal"><span class="pre">Backbone.ViewEvents</span></tt> global.</p>
+</div>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<p>The library exposes <tt class="docutils literal"><span class="pre">ViewEvents</span></tt> mixin for <tt class="docutils literal"><span class="pre">Backbone.View</span></tt>:</p>
+<div class="highlight-python"><pre>var ViewEvents = require('backbone.viewevents').ViewEvents,
+    View = require('backbone').View,
+    extend = require('underscore').extend;
+
+extend(View.prototype, ViewEvents);
+
+var parent = new View().render(),
+    child = new View().render();
+
+parent.$el.append(child.$el);
+
+// register listener on parent
+parent.on('someevent', function (msg) {
+  console.log('caught!', msg);
+});
+
+// trigger event on child
+child.trigger('someevent', 'hello');</pre>
+</div>
+<p>As you can see <tt class="docutils literal"><span class="pre">parent</span></tt> view didn&#8217;t subscribe to <tt class="docutils literal"><span class="pre">child</span></tt> and still gets the
+<tt class="docutils literal"><span class="pre">someevent</span></tt> event.</p>
+</div>
+<div class="section" id="development">
+<h2>Development<a class="headerlink" href="#development" title="Permalink to this headline">¶</a></h2>
+<p>Development of the library takes place in the  GitHub
+<a class="reference external" href="https://github.com/andreypopp/backbone.viewevents">andreypopp/backbone.viewevents</a> repository.</p>
+<p>Before submitting any pull requests please make sure with <tt class="docutils literal"><span class="pre">make</span> <span class="pre">test</span></tt> that all
+tests pass.</p>
+</div>
+</div>
+
+
+  <footer>
+    <p>backbone.viewevents 0.3.4</p>
+    <p>Generated using Sphinx 1.2b1</p>
+  </footer>
+</div>
+</div>
+<a class="github-ribbon" href="https://github.com/andreypopp/backbone.viewevents">
+  <img src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub">
+</a>
